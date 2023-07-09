@@ -1,0 +1,36 @@
+#pragma once
+
+#include <Laplace/Filter.hpp>
+#include <Laplace/Frequency.hpp>
+
+#include <cassert>
+#include <cmath>
+
+namespace lp {
+
+template <typename ValueType>
+class LowPass : public Filter<ValueType> {
+public:
+    LowPass(Frequency<ValueType> cutoff_frequency, ValueType initial_value) noexcept
+        : m_cutoff_frequency(cutoff_frequency)
+        , m_output(initial_value)
+    {
+    }
+
+    ValueType operator()(ValueType input, std::chrono::nanoseconds dt) noexcept override
+    {
+        assert(std::isfinite(input));
+
+        // out[n] = a * in[n] + (1 - a) * out[n-1]
+        const auto coefficient = exp(-m_cutoff_frequency * dt);
+        return m_output = coefficient * m_output + (1 - coefficient) * input;
+    }
+
+    [[nodiscard]] ValueType value() const noexcept override { return m_output; }
+
+private:
+    Frequency<ValueType> m_cutoff_frequency;
+    ValueType m_output;
+};
+
+}

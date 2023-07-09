@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "configurePresets":[
+    {
+      "name": "dev",
+      "binaryDir": "build",
+      "installDir": "${sourceDir}/build/install",
+      "cacheVariables": {
+        "BUILD_EXAMPLES": "ON",
+        "BUILD_TESTING": "ON",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
+        "LAPLACE_WARNINGS_AS_ERRORS": "ON"
+      }
+    }
+  ],
+  "buildPresets":[
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "jobs": 4,
+      "targets": ["install"]
+    }
+  ],
+  "testPresets":[
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "output": {
+        "shortProgress": true,
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

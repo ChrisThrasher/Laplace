@@ -1,0 +1,22 @@
+Language: Cpp
+BasedOnStyle: WebKit
+
+AlignAfterOpenBracket: Align
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+ColumnLimit: 120
+QualifierAlignment: Left
+
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Priority: 1
+    Regex: '^\"(.+)\"$'
+  - Priority: 2
+    Regex: '^<Laplace\/(.*).hpp>$'
+  - Priority: 3
+    Regex: '^<(.+)\.(.+)>$'
+  - Priority: 4
+    Regex: '^<(.+)>$'
+SortIncludes: true
+SortUsingDeclarations: true

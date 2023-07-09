@@ -1,0 +1,132 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.platform.name }} ${{ matrix.type.name }} ${{ matrix.config.name }}
+    runs-on: ${{ matrix.platform.os }}
+    defaults:
+      run:
+        shell: bash
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - { name: Windows MSVC,    os: windows-2022 }
+        - { name: Windows ClangCL, os: windows-2022, flags: -T ClangCL }
+        - { name: Windows Clang,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Windows MinGW,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=g++ }
+        - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
+        - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux Intel,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=icpx }
+        - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DBUILD_EXAMPLES=OFF }
+        - { name: macOS Clang,     os: macos-12,     flags: -GNinja }
+        type:
+        - { name: Static, flags: "OFF" }
+        - { name: Shared, flags: "ON" }
+        config:
+        - { name: Debug }
+        - { name: Release }
+
+    steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      run: sudo apt update && sudo apt install ninja-build libxrandr-dev libxcursor-dev libudev-dev libgl1-mesa-dev libegl1-mesa-dev
+
+    - name: Install Intel compiler
+      if: matrix.platform.name == 'Linux Intel'
+      run: |
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+          | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+        sudo apt update && sudo apt install intel-oneapi-compiler-dpcpp-cpp
+        source /opt/intel/oneapi/setvars.sh
+        printenv >> $GITHUB_ENV
+
+    - name: Install macOS Dependencies
+      if: runner.os == 'macOS'
+      run: brew update && brew install ninja
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake --preset dev ${{ matrix.platform.flags }} -DBUILD_SHARED_LIBS=${{ matrix.type.flags }} -DCMAKE_BUILD_TYPE=${{ matrix.config.name }} -DCMAKE_VERBOSE_MAKEFILE=ON
+
+    - name: Build
+      run: cmake --build --preset dev --config ${{ matrix.config.name }}
+
+    - name: Test
+      run: ctest --preset dev --build-config ${{ matrix.config.name }}
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Install Dependencies
+      run: sudo apt install gcovr
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_CXX_FLAGS=--coverage
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      run: ctest --test-dir build
+
+    - name: Generate Coverage Report
+      run: gcovr -x build/coverage.out -s -f 'src/.*' -f 'include/Laplace/.*' .
+
+    - name: Upload Coverage Report
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        directory: build
+        files: ./build/coverage.out
+
+  format:
+    name: Formatting
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake -B build -DCMAKE_CXX_COMPILER=clang++
+
+    - name: Format
+      run: |
+        cmake --build build --target format
+        git diff --exit-code
+
+  tidy:
+    name: Static Analysis
+    runs-on: macos-12
+
+    steps:
+    - name: Install clang-tidy
+      run: |
+        brew update && brew install llvm || true
+        echo /usr/local/opt/llvm/bin >> $GITHUB_PATH
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake --preset dev -DCMAKE_CXX_COMPILER=clang++
+
+    - name: Tidy
+      run: cmake --build build --target tidy
