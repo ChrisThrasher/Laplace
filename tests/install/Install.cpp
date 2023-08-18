@@ -1,3 +1,3 @@
 #include <Laplace/LowPass.hpp>
 
-int main() { [[maybe_unused]] auto filter = lp::LowPass<double>(lp::hertz(10.), 0.0); }
+int main() { [[maybe_unused]] auto filter = lp::LowPass(lp::hertz(10.), 0.); }
