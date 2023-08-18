@@ -1,8 +1,8 @@
 #include <Laplace/Filter.hpp>
 
-#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 
-TEST_CASE("lp::Filter")
+TEMPLATE_TEST_CASE("lp::Filter", "", float, double, long double)
 {
     SECTION("Type traits")
     {

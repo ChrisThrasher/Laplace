@@ -1,38 +1,38 @@
 #include <Laplace/Frequency.hpp>
 
-#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
-TEST_CASE("lp::Frequency")
+TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 {
     SECTION("Type traits")
     {
-        STATIC_CHECK(std::is_default_constructible_v<lp::Frequency<double>>);
-        STATIC_CHECK(std::is_copy_constructible_v<lp::Frequency<double>>);
-        STATIC_CHECK(std::is_copy_assignable_v<lp::Frequency<double>>);
-        STATIC_CHECK(std::is_nothrow_move_constructible_v<lp::Frequency<double>>);
-        STATIC_CHECK(std::is_nothrow_move_assignable_v<lp::Frequency<double>>);
+        STATIC_CHECK(std::is_default_constructible_v<lp::Frequency<TestType>>);
+        STATIC_CHECK(std::is_copy_constructible_v<lp::Frequency<TestType>>);
+        STATIC_CHECK(std::is_copy_assignable_v<lp::Frequency<TestType>>);
+        STATIC_CHECK(std::is_nothrow_move_constructible_v<lp::Frequency<TestType>>);
+        STATIC_CHECK(std::is_nothrow_move_assignable_v<lp::Frequency<TestType>>);
     }
 
     SECTION("Construction")
     {
         SECTION("Default constructor")
         {
-            const auto frequency = lp::Frequency<double>();
+            const auto frequency = lp::Frequency<TestType>();
             CHECK(frequency.as_radians_per_second() == 0);
             CHECK(frequency.as_hertz() == 0);
         }
 
         SECTION("radians_per_second()")
         {
-            const auto frequency = lp::radians_per_second(10.);
+            const auto frequency = lp::radians_per_second<TestType>(10);
             CHECK(frequency.as_radians_per_second() == 10);
             CHECK_THAT(frequency.as_hertz(), Catch::Matchers::WithinRel(1.592, 1e-3));
         }
 
         SECTION("hertz()")
         {
-            const auto frequency = lp::hertz(42.);
+            const auto frequency = lp::hertz<TestType>(42);
             CHECK_THAT(frequency.as_radians_per_second(), Catch::Matchers::WithinRel(263.9, 1e-3));
             CHECK(frequency.as_hertz() == 42);
         }
@@ -42,38 +42,38 @@ TEST_CASE("lp::Frequency")
     {
         SECTION("operator-()")
         {
-            CHECK(-lp::hertz(42.).as_hertz() == -42);
-            CHECK(-lp::radians_per_second(-3.14).as_radians_per_second() == 3.14);
+            CHECK(-lp::hertz<TestType>(42).as_hertz() == -42);
+            CHECK(-lp::radians_per_second<TestType>(-3.14f).as_radians_per_second() == TestType(3.14f));
         }
 
         SECTION("operator==()")
         {
-            CHECK(lp::hertz(0.) == lp::radians_per_second(0.));
-            CHECK(lp::hertz(10.) == lp::hertz(10.));
-            CHECK(lp::radians_per_second(10.) == lp::radians_per_second(10.));
+            CHECK(lp::hertz<TestType>(0) == lp::radians_per_second<TestType>(0));
+            CHECK(lp::hertz<TestType>(10) == lp::hertz<TestType>(10));
+            CHECK(lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(10));
         }
 
         SECTION("operator*(Frequency, std::chrono::duration)")
         {
             using namespace std::chrono_literals;
-            CHECK(lp::radians_per_second(4.2) * 0s == lp::radians(0.));
-            CHECK(lp::radians_per_second(4.2) * 1s == lp::radians(4.2));
-            CHECK(lp::radians_per_second(4.2) * 10s == lp::radians(42.));
+            CHECK(lp::radians_per_second<TestType>(4) * 0s == lp::radians<TestType>(0));
+            CHECK(lp::radians_per_second<TestType>(4) * 1s == lp::radians<TestType>(4));
+            CHECK(lp::radians_per_second<TestType>(4) * 10s == lp::radians<TestType>(40));
         }
 
         SECTION("operator*(std::chrono::duration, Frequency)")
         {
             using namespace std::chrono_literals;
-            CHECK(0s * lp::radians_per_second(4.2) == lp::radians(0.));
-            CHECK(1s * lp::radians_per_second(4.2) == lp::radians(4.2));
-            CHECK(10s * lp::radians_per_second(4.2) == lp::radians(42.));
+            CHECK(0s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(0));
+            CHECK(1s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(4));
+            CHECK(10s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(40));
         }
 
         SECTION("operator*(ValueType, Frequency)")
         {
-            CHECK(0. * lp::radians_per_second(10.) == lp::radians_per_second(0.));
-            CHECK(2. * lp::radians_per_second(10.) == lp::radians_per_second(20.));
-            CHECK(20. * lp::radians_per_second(10.) == lp::radians_per_second(200.));
+            CHECK(TestType(0) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(0));
+            CHECK(TestType(2) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(20));
+            CHECK(TestType(20) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(200));
         }
     }
 }

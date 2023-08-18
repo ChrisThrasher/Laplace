@@ -33,8 +33,10 @@ template <typename ValueType>
 auto fft(const Signal<ValueType>& signal)
 {
     assert(signal.size() >= 2);
-    const auto duration = signal.back().time - signal.front().time;
+
     const auto size = ValueType(signal.size());
+    const auto duration = signal.back().time - signal.front().time;
+    assert(duration > std::chrono::nanoseconds(0));
 
     auto transformed = std::vector<DftDatum<ValueType>>(signal.size());
     for (std::size_t k = 0; k < signal.size() / 2; ++k) {
