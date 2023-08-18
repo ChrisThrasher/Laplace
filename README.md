@@ -78,6 +78,5 @@ Near term development goals:
  * Add signal synthesizer that uses same return type as `lp::fft`
  * Determine how to support arrays of raw values as input to `lp::fft`
  * Add Doxygen docs and docs website (only when API starts to stabilize)
- * Run sanitizers in CI
  * Templatize tests to cover `float`, `double`, and `long double`
  * Use custom matchers for fuzzy comparisons of aggregate types

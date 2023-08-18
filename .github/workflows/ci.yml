@@ -83,7 +83,7 @@ jobs:
       run: cmake --build build
 
     - name: Test
-      run: ctest --test-dir build
+      run: ctest --test-dir build --output-on-failure
 
     - name: Generate Coverage Report
       run: gcovr -x build/coverage.out -s -f 'src/.*' -f 'include/Laplace/.*' .
@@ -105,7 +105,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
-      run: cmake -B build -DCMAKE_CXX_COMPILER=clang++
+      run: cmake -B build
 
     - name: Format
       run: |
@@ -130,3 +130,20 @@ jobs:
 
     - name: Tidy
       run: cmake --build build --target tidy
+
+  sanitize:
+    name: Sanitizing
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake --preset dev -DBUILD_EXAMPLES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -fsanitize=address,undefined"
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      run: ctest --test-dir build --output-on-failure
