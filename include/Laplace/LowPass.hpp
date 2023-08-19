@@ -11,13 +11,13 @@ namespace lp {
 template <typename ValueType>
 class LowPass : public Filter<ValueType> {
 public:
-    LowPass(Frequency<ValueType> cutoff_frequency, ValueType initial_value) noexcept
+    LowPass(Frequency<ValueType> cutoff_frequency, ValueType initial_value)
         : m_cutoff_frequency(cutoff_frequency)
         , m_output(initial_value)
     {
     }
 
-    ValueType operator()(ValueType input, std::chrono::nanoseconds dt) noexcept override
+    ValueType operator()(ValueType input, std::chrono::nanoseconds dt) override
     {
         assert(std::isfinite(input));
 
@@ -26,7 +26,7 @@ public:
         return m_output = coefficient * m_output + (1 - coefficient) * input;
     }
 
-    [[nodiscard]] ValueType value() const noexcept override { return m_output; }
+    [[nodiscard]] ValueType value() const override { return m_output; }
 
 private:
     Frequency<ValueType> m_cutoff_frequency;

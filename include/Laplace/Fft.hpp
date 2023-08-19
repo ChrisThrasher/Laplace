@@ -5,6 +5,7 @@
 #include <cassert>
 #include <chrono>
 #include <complex>
+#include <tuple>
 #include <vector>
 
 namespace lp {
@@ -17,6 +18,12 @@ struct DftDatum {
     lp::Angle<ValueType> phase;
     ValueType amplitude {};
 };
+
+template <typename ValueType>
+auto& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
+{
+    return stream << "{ " << dft_datum.frequency << ", " << dft_datum.phase << ", " << dft_datum.amplitude << " }";
+}
 
 template <typename ValueType>
 [[nodiscard]] bool operator==(const DftDatum<ValueType>& lhs, const DftDatum<ValueType>& rhs)

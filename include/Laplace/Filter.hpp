@@ -12,8 +12,8 @@ public:
 
     virtual ~Filter() = default;
 
-    virtual ValueType operator()(ValueType input, std::chrono::nanoseconds dt) noexcept = 0;
-    [[nodiscard]] virtual ValueType value() const noexcept = 0;
+    virtual ValueType operator()(ValueType input, std::chrono::nanoseconds dt) = 0;
+    [[nodiscard]] virtual ValueType value() const = 0;
 };
 
 }

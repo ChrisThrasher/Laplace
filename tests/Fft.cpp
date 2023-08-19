@@ -37,9 +37,23 @@ TEMPLATE_TEST_CASE("lp::fft", "", float, double, long double)
     SECTION("Minimal signal of zeroes")
     {
         CHECK(lp::fft<TestType>({ 0, 0 }, 10ms)
-              == std::vector<lp::DftDatum<TestType>> {
-                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 },
-                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 } });
+              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 } });
+    }
+
+    SECTION("Minimal signal of zeroes")
+    {
+        CHECK(lp::fft<TestType>({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 1s)
+              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(1), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(2), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(3), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(4), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 } });
     }
 
     SECTION("Non-zero DC gain")
