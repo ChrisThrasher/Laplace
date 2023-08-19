@@ -33,6 +33,9 @@ jobs:
         config:
         - { name: Debug }
         - { name: Release }
+        exclude:
+        - platform: { name: Linux Intel }
+          config: { name: Release }
 
     steps:
     - name: Install Linux Dependencies
