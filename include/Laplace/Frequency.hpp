@@ -49,7 +49,7 @@ template <typename ValueType>
 }
 
 template <typename ValueType>
-auto& operator<<(std::ostream& stream, Frequency<ValueType> frequency)
+std::ostream& operator<<(std::ostream& stream, Frequency<ValueType> frequency)
 {
     return stream << frequency.as_radians_per_second() << " rad/s";
 }

@@ -20,7 +20,7 @@ struct DftDatum {
 };
 
 template <typename ValueType>
-auto& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
+std::ostream& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
 {
     return stream << "{ " << dft_datum.frequency << ", " << dft_datum.phase << ", " << dft_datum.amplitude << " }";
 }

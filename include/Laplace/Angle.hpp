@@ -49,7 +49,7 @@ template <typename ValueType>
 }
 
 template <typename ValueType>
-auto& operator<<(std::ostream& stream, Angle<ValueType> angle)
+std::ostream& operator<<(std::ostream& stream, Angle<ValueType> angle)
 {
     return stream << angle.as_radians() << " rad";
 }

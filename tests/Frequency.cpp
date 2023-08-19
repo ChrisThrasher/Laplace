@@ -3,6 +3,8 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
+#include <sstream>
+
 TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 {
     SECTION("Type traits")
@@ -40,6 +42,13 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 
     SECTION("Operators")
     {
+        SECTION("operator<<()")
+        {
+            auto stream = std::ostringstream();
+            stream << lp::radians_per_second<TestType>(3.14f);
+            CHECK(stream.str() == "3.14 rad/s");
+        }
+
         SECTION("operator-()")
         {
             CHECK(-lp::hertz<TestType>(42).as_hertz() == -42);
