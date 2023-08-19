@@ -19,6 +19,12 @@ struct DftDatum {
 };
 
 template <typename ValueType>
+[[nodiscard]] bool operator==(const DftDatum<ValueType>& lhs, const DftDatum<ValueType>& rhs)
+{
+    return std::tie(lhs.frequency, lhs.phase, lhs.amplitude) == std::tie(rhs.frequency, rhs.phase, rhs.amplitude);
+}
+
+template <typename ValueType>
 auto fft(const std::vector<ValueType>& signal, const std::chrono::nanoseconds duration)
 {
     assert(signal.size() >= 2);
