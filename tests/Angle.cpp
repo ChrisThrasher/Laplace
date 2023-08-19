@@ -21,21 +21,21 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
     {
         SECTION("Default constructor")
         {
-            const auto angle = lp::Angle<TestType>();
-            CHECK(angle.as_radians() == 0);
-            CHECK(angle.as_degrees() == 0);
+            constexpr auto angle = lp::Angle<TestType>();
+            STATIC_CHECK(angle.as_radians() == 0);
+            STATIC_CHECK(angle.as_degrees() == 0);
         }
 
         SECTION("radians()")
         {
-            const auto angle = lp::radians<TestType>(1);
-            CHECK(angle.as_radians() == 1);
+            constexpr auto angle = lp::radians<TestType>(1);
+            STATIC_CHECK(angle.as_radians() == 1);
             CHECK_THAT(angle.as_degrees(), Catch::Matchers::WithinRel(57.2957795131, 1e-3));
         }
 
         SECTION("degrees()")
         {
-            const auto angle = lp::degrees<TestType>(10);
+            constexpr auto angle = lp::degrees<TestType>(10);
             CHECK_THAT(angle.as_radians(), Catch::Matchers::WithinRel(0.1745329252, 1e-3));
             CHECK_THAT(angle.as_degrees(), Catch::Matchers::WithinAbs(10., 1e-6));
         }
@@ -52,15 +52,15 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
 
         SECTION("operator==()")
         {
-            CHECK(lp::degrees<TestType>(0) == lp::radians<TestType>(0));
-            CHECK(lp::degrees<TestType>(10) == lp::degrees<TestType>(10));
-            CHECK(lp::radians<TestType>(3.14f) == lp::radians<TestType>(3.14f));
+            STATIC_CHECK(lp::degrees<TestType>(0) == lp::radians<TestType>(0));
+            STATIC_CHECK(lp::degrees<TestType>(10) == lp::degrees<TestType>(10));
+            STATIC_CHECK(lp::radians<TestType>(3.14f) == lp::radians<TestType>(3.14f));
         }
 
         SECTION("operator/()")
         {
-            CHECK(lp::radians<TestType>(4) / TestType(4) == lp::radians<TestType>(1));
-            CHECK(lp::radians<TestType>(0) / TestType(10) == lp::radians<TestType>(0));
+            STATIC_CHECK(lp::radians<TestType>(4) / TestType(4) == lp::radians<TestType>(1));
+            STATIC_CHECK(lp::radians<TestType>(0) / TestType(10) == lp::radians<TestType>(0));
         }
     }
 

@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
 }
 
 template <typename ValueType>
-[[nodiscard]] bool operator==(const DftDatum<ValueType>& lhs, const DftDatum<ValueType>& rhs)
+[[nodiscard]] constexpr bool operator==(const DftDatum<ValueType>& lhs, const DftDatum<ValueType>& rhs)
 {
     return std::tie(lhs.frequency, lhs.phase, lhs.amplitude) == std::tie(rhs.frequency, rhs.phase, rhs.amplitude);
 }

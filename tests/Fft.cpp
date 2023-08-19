@@ -16,10 +16,10 @@ TEMPLATE_TEST_CASE("lp::DftDatum", "", float, double, long double)
 
     SECTION("Construction")
     {
-        const auto dft_datum = lp::DftDatum<TestType>();
-        CHECK(dft_datum.frequency == lp::radians_per_second<TestType>(0));
-        CHECK(dft_datum.phase == lp::degrees<TestType>(0));
-        CHECK(dft_datum.amplitude == 0);
+        constexpr auto dft_datum = lp::DftDatum<TestType>();
+        STATIC_CHECK(dft_datum.frequency == lp::radians_per_second<TestType>(0));
+        STATIC_CHECK(dft_datum.phase == lp::degrees<TestType>(0));
+        STATIC_CHECK(dft_datum.amplitude == 0);
     }
 
     SECTION("Operators")
@@ -33,9 +33,9 @@ TEMPLATE_TEST_CASE("lp::DftDatum", "", float, double, long double)
 
         SECTION("operator==()")
         {
-            CHECK(lp::DftDatum<TestType>() == lp::DftDatum<TestType>());
-            CHECK(lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 }
-                  == lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 });
+            STATIC_CHECK(lp::DftDatum<TestType>() == lp::DftDatum<TestType>());
+            STATIC_CHECK(lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 }
+                         == lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 });
         }
     }
 }
