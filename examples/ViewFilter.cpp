@@ -34,32 +34,28 @@ auto generate_signal()
     constexpr auto dc_gain = 0.5;
     constexpr auto duration = 15s;
     constexpr auto dt = 10ms;
-    auto signal = lp::Signal<double>(duration / dt);
+
+    auto signal = std::vector<double>(duration / dt);
     auto noise = std::normal_distribution(0., .1);
     for (std::size_t i = 0; i < signal.size(); ++i) {
         const auto t = i * dt;
         const auto frequency = lp::radians_per_second((lp::hertz(0.2) * t).as_radians());
-        signal[i] = { t, cos(frequency * t) + dc_gain + noise(rng()) };
+        signal[i] = { cos(frequency * t) + dc_gain + noise(rng()) };
     }
-    return signal;
+
+    return std::make_pair(signal, duration);
 }
 
-auto run_filter(lp::Filter<double>& filter, const lp::Signal<double>& input)
+auto run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds duration)
 {
     assert(input.size() >= 2);
-    const auto dt = std::chrono::duration_cast<std::chrono::nanoseconds>(input[1].time - input[0].time);
-    auto output = lp::Signal<double>(input.size());
+    const auto dt = duration / input.size();
+    auto output = std::vector<double>(input.size());
     for (std::size_t i = 0; i < output.size(); ++i) {
-        output[i] = { input[i].time, filter.value() };
-        filter(input[i].amplitude, dt);
+        output[i] = filter.value();
+        filter(input[i], dt);
     }
     return output;
-}
-
-auto signal_reader(int index, void* data)
-{
-    const auto [time, amplitude] = static_cast<lp::Signal<double>::value_type*>(data)[index];
-    return ImPlotPoint(std::chrono::duration_cast<std::chrono::duration<double>>(time).count(), amplitude);
 }
 
 auto dft_reader(int index, void* data)
@@ -77,11 +73,12 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
         throw std::runtime_error("Failed to initilalize ImGui");
     ImPlot::CreateContext();
 
-    auto input = generate_signal();
-    auto output = run_filter(filter, input);
+    const auto [input, duration] = generate_signal();
+    const auto output = run_filter(filter, input, duration);
+    const auto dt = std::chrono::duration_cast<std::chrono::duration<double>>(duration) / double(input.size());
 
-    auto input_freqs = lp::fft(input);
-    auto output_freqs = lp::fft(output);
+    auto input_freqs = lp::fft(input, duration);
+    auto output_freqs = lp::fft(output, duration);
 
     auto clock = sf::Clock();
     while (window.isOpen()) {
@@ -115,8 +112,8 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
         if (!ImPlot::BeginPlot("##Time", plot_size, ImPlotFlags_NoTitle | ImPlotFlags_NoFrame))
             throw std::runtime_error("Failed to begin plot");
         ImPlot::SetupAxes("Time (s)", "Amplitude");
-        ImPlot::PlotLineG("Input", signal_reader, input.data(), int(input.size()));
-        ImPlot::PlotLineG("Output", signal_reader, output.data(), int(output.size()));
+        ImPlot::PlotLine("Input", input.data(), int(input.size()), dt.count());
+        ImPlot::PlotLine("Output", output.data(), int(output.size()), dt.count());
         ImPlot::EndPlot();
 
         // Plot frequency response

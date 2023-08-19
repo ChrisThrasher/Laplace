@@ -10,14 +10,6 @@
 namespace lp {
 
 template <typename ValueType>
-struct Datum {
-    static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
-
-    std::chrono::duration<ValueType> time {};
-    ValueType amplitude {};
-};
-
-template <typename ValueType>
 struct DftDatum {
     static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
 
@@ -27,15 +19,11 @@ struct DftDatum {
 };
 
 template <typename ValueType>
-using Signal = std::vector<Datum<ValueType>>;
-
-template <typename ValueType>
-auto fft(const Signal<ValueType>& signal)
+auto fft(const std::vector<ValueType>& signal, const std::chrono::nanoseconds duration)
 {
     assert(signal.size() >= 2);
 
     const auto size = ValueType(signal.size());
-    const auto duration = signal.back().time - signal.front().time;
     assert(duration > std::chrono::nanoseconds(0));
 
     auto transformed = std::vector<DftDatum<ValueType>>(signal.size());
@@ -44,7 +32,7 @@ auto fft(const Signal<ValueType>& signal)
         auto val = std::complex<ValueType>();
         for (std::size_t n = 0; n < signal.size(); ++n) {
             const auto phi = (frequency * std::chrono::seconds(n)) / size;
-            val += signal[n].amplitude * std::complex(cos(phi), -sin(phi));
+            val += signal[n] * std::complex(cos(phi), -sin(phi));
         }
         val /= size;
         transformed[k]
