@@ -17,7 +17,7 @@ using namespace std::chrono_literals;
 
 namespace {
 
-auto& rng()
+[[nodiscard]] auto& rng()
 {
     thread_local auto generator = []() {
         auto seed_data = std::array<std::random_device::result_type, std::mt19937::state_size>();
@@ -29,7 +29,7 @@ auto& rng()
     return generator;
 }
 
-auto generate_signal()
+[[nodiscard]] auto generate_signal()
 {
     constexpr auto dc_gain = 0.5;
     constexpr auto duration = 15s;
@@ -46,7 +46,8 @@ auto generate_signal()
     return std::make_pair(signal, duration);
 }
 
-auto run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds duration)
+[[nodiscard]] auto
+run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds duration)
 {
     assert(input.size() >= 2);
     const auto dt = duration / input.size();
@@ -58,7 +59,7 @@ auto run_filter(lp::Filter<double>& filter, const std::vector<double>& input, co
     return output;
 }
 
-auto dft_reader(int index, void* data)
+[[nodiscard]] auto dft_reader(int index, void* data)
 {
     const auto [frequency, phase, amplitude] = static_cast<std::vector<lp::DftDatum<double>>::value_type*>(data)[index];
     return ImPlotPoint(frequency.as_hertz(), amplitude);

@@ -32,7 +32,7 @@ template <typename ValueType>
 }
 
 template <typename ValueType>
-auto fft(const std::vector<ValueType>& signal, const std::chrono::nanoseconds duration)
+[[nodiscard]] auto fft(const std::vector<ValueType>& signal, const std::chrono::nanoseconds duration)
 {
     assert(signal.size() >= 2);
 
