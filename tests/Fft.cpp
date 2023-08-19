@@ -36,23 +36,18 @@ TEMPLATE_TEST_CASE("lp::fft", "", float, double, long double)
 
     SECTION("Minimal signal of zeroes")
     {
-        const auto dft_data = lp::fft<TestType>({ 0, 0 }, 10ms);
-        REQUIRE(dft_data.size() == 2);
-        CHECK(dft_data[0]
-              == lp::DftDatum<TestType> { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 });
-        CHECK(dft_data[1]
-              == lp::DftDatum<TestType> { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 });
+        CHECK(lp::fft<TestType>({ 0, 0 }, 10ms)
+              == std::vector<lp::DftDatum<TestType>> {
+                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 },
+                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 } });
     }
 
     SECTION("Non-zero DC gain")
     {
-        const auto dft_data = lp::fft<TestType>({ 1, 1, 1 }, 20ms);
-        REQUIRE(dft_data.size() == 3);
-        CHECK(dft_data[0]
-              == lp::DftDatum<TestType> { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 1 });
-        CHECK(dft_data[1]
-              == lp::DftDatum<TestType> { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 });
-        CHECK(dft_data[2]
-              == lp::DftDatum<TestType> { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 });
+        CHECK(lp::fft<TestType>({ 1, 1, 1 }, 20ms)
+              == std::vector<lp::DftDatum<TestType>> {
+                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 1 },
+                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 },
+                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 } });
     }
 }
