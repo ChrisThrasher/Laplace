@@ -9,6 +9,7 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
 {
     SECTION("Type traits")
     {
+        STATIC_CHECK(sizeof(lp::Angle<TestType>) == sizeof(TestType));
         STATIC_CHECK(std::is_default_constructible_v<lp::Angle<TestType>>);
         STATIC_CHECK(std::is_copy_constructible_v<lp::Angle<TestType>>);
         STATIC_CHECK(std::is_copy_assignable_v<lp::Angle<TestType>>);

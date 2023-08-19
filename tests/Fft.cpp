@@ -18,7 +18,7 @@ TEMPLATE_TEST_CASE("lp::DftDatum", "", float, double, long double)
     {
         const auto dft_datum = lp::DftDatum<TestType>();
         CHECK(dft_datum.frequency == lp::radians_per_second<TestType>(0));
-        CHECK(dft_datum.phase == lp::radians<TestType>(0));
+        CHECK(dft_datum.phase == lp::degrees<TestType>(0));
         CHECK(dft_datum.amplitude == 0);
     }
 
@@ -47,31 +47,30 @@ TEMPLATE_TEST_CASE("lp::fft", "", float, double, long double)
     SECTION("Minimal signal of zeroes")
     {
         CHECK(lp::fft<TestType>({ 0, 0 }, 10ms)
-              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 } });
+              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 } });
     }
 
     SECTION("Minimal signal of zeroes")
     {
         CHECK(lp::fft<TestType>({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 1s)
-              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(1), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(2), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(3), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(4), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 },
-                                                       { lp::hertz<TestType>(0), lp::radians<TestType>(0), 0 } });
+              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(1), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(2), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(3), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(4), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 } });
     }
 
     SECTION("Non-zero DC gain")
     {
         CHECK(lp::fft<TestType>({ 1, 1, 1 }, 20ms)
-              == std::vector<lp::DftDatum<TestType>> {
-                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 1 },
-                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 },
-                  { lp::radians_per_second<TestType>(0), lp::radians<TestType>(0), 0 } });
+              == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 1 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
+                                                       { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 } });
     }
 }

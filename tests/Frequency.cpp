@@ -9,6 +9,7 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 {
     SECTION("Type traits")
     {
+        STATIC_CHECK(sizeof(lp::Frequency<TestType>) == sizeof(TestType));
         STATIC_CHECK(std::is_default_constructible_v<lp::Frequency<TestType>>);
         STATIC_CHECK(std::is_copy_constructible_v<lp::Frequency<TestType>>);
         STATIC_CHECK(std::is_copy_assignable_v<lp::Frequency<TestType>>);
