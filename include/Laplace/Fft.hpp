@@ -3,7 +3,6 @@
 #include <Laplace/Frequency.hpp>
 
 #include <cassert>
-#include <chrono>
 #include <complex>
 #include <tuple>
 #include <vector>
