@@ -43,14 +43,13 @@ namespace {
         signal[i] = { cos(frequency * t) + dc_gain + noise(rng()) };
     }
 
-    return std::make_pair(signal, duration);
+    return std::make_pair(signal, dt);
 }
 
 [[nodiscard]] auto
-run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds duration)
+run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds dt)
 {
     assert(input.size() >= 2);
-    const auto dt = duration / input.size();
     auto output = std::vector<double>(input.size());
     for (std::size_t i = 0; i < output.size(); ++i) {
         output[i] = filter.value();
@@ -74,12 +73,14 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
         throw std::runtime_error("Failed to initilalize ImGui");
     ImPlot::CreateContext();
 
-    const auto [input, duration] = generate_signal();
-    const auto output = run_filter(filter, input, duration);
-    const auto dt = std::chrono::duration_cast<std::chrono::duration<double>>(duration) / double(input.size());
+    const auto [input, dt] = generate_signal();
+    const auto output = run_filter(filter, input, dt);
+    const auto signal_width = std::chrono::duration_cast<std::chrono::duration<double>>(dt).count();
 
-    auto input_freqs = lp::fft(input, duration);
-    auto output_freqs = lp::fft(output, duration);
+    auto input_freqs = lp::fft(input, dt);
+    auto output_freqs = lp::fft(output, dt);
+    const auto input_width = (input_freqs[1].frequency - input_freqs[0].frequency).as_hertz();
+    const auto output_width = input_width * 0.6;
 
     auto clock = sf::Clock();
     while (window.isOpen()) {
@@ -113,16 +114,16 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
         if (!ImPlot::BeginPlot("##Time", plot_size, ImPlotFlags_NoTitle | ImPlotFlags_NoFrame))
             throw std::runtime_error("Failed to begin plot");
         ImPlot::SetupAxes("Time (s)", "Amplitude");
-        ImPlot::PlotLine("Input", input.data(), int(input.size()), dt.count());
-        ImPlot::PlotLine("Output", output.data(), int(output.size()), dt.count());
+        ImPlot::PlotLine("Input", input.data(), int(input.size()), signal_width);
+        ImPlot::PlotLine("Output", output.data(), int(output.size()), signal_width);
         ImPlot::EndPlot();
 
         // Plot frequency response
         if (!ImPlot::BeginPlot("##Frequency", plot_size, ImPlotFlags_NoTitle | ImPlotFlags_NoFrame))
             throw std::runtime_error("Failed to begin plot");
         ImPlot::SetupAxes("Frequency (Hz)", "Amplitude");
-        ImPlot::PlotBarsG("Input", dft_reader, input_freqs.data(), int(input_freqs.size()), .15);
-        ImPlot::PlotBarsG("Output", dft_reader, output_freqs.data(), int(output_freqs.size()), .1);
+        ImPlot::PlotBarsG("Input", dft_reader, input_freqs.data(), int(input_freqs.size()), input_width);
+        ImPlot::PlotBarsG("Output", dft_reader, output_freqs.data(), int(output_freqs.size()), output_width);
         ImPlot::EndPlot();
 
         ImGui::End();
