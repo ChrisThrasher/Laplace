@@ -50,7 +50,14 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
             CHECK(stream.str() == "3.14 rad/s");
         }
 
-        SECTION("operator-()")
+        SECTION("operator-(Frequency, Frequency)")
+        {
+            STATIC_CHECK(lp::Frequency<TestType>() - lp::Frequency<TestType>() == lp::Frequency<TestType>());
+            STATIC_CHECK(lp::radians_per_second<TestType>(10) - lp::radians_per_second<TestType>(5)
+                         == lp::radians_per_second<TestType>(5));
+        }
+
+        SECTION("operator-(Frequency)")
         {
             STATIC_CHECK(-lp::hertz<TestType>(42).as_hertz() == -42);
             STATIC_CHECK(-lp::radians_per_second<TestType>(-3.14f).as_radians_per_second() == TestType(3.14f));
