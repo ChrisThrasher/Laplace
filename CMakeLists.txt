@@ -54,8 +54,7 @@ if(NOT PROJECT_IS_TOP_LEVEL)
 endif()
 
 # Always build dependencies as static libraries
-set(OLD_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libs" FORCE)
+set(BUILD_SHARED_LIBS OFF)
 
 # Add examples
 option(BUILD_EXAMPLES "Build examples" OFF)
@@ -69,9 +68,6 @@ if(BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()
-
-# Restore existing cache value to not alter subsequent builds
-set(BUILD_SHARED_LIBS ${OLD_BUILD_SHARED_LIBS} CACHE BOOL "Build shared libs" FORCE)
 
 # Add development targets
 add_custom_target(format
