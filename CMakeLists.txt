@@ -13,21 +13,21 @@ endif()
 
 # Add library
 include(GenerateExportHeader)
-add_library(Laplace INTERFACE)
+add_library(Laplace src/Rng.cpp)
 add_library(Laplace::Laplace ALIAS Laplace)
-target_include_directories(Laplace INTERFACE
+target_include_directories(Laplace PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
-target_compile_features(Laplace INTERFACE cxx_std_17)
-# target_compile_options(Laplace PRIVATE ${LAPLACE_WARNINGS})
-# set_target_properties(Laplace PROPERTIES
-#     VERSION ${PROJECT_VERSION}
-#     CXX_VISIBILITY_PRESET hidden
-#     VISIBILITY_INLINES_HIDDEN YES)
-# generate_export_header(Laplace EXPORT_FILE_NAME include/Laplace/Export.hpp)
-# if(NOT BUILD_SHARED_LIBS)
-#     target_compile_definitions(Laplace PUBLIC LAPLACE_STATIC_DEFINE)
-# endif()
+target_compile_features(Laplace PUBLIC cxx_std_17)
+target_compile_options(Laplace PRIVATE ${LAPLACE_WARNINGS})
+set_target_properties(Laplace PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN YES)
+generate_export_header(Laplace EXPORT_FILE_NAME include/Laplace/Export.hpp)
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(Laplace PUBLIC LAPLACE_STATIC_DEFINE)
+endif()
 
 # Install library
 include(CMakePackageConfigHelpers)

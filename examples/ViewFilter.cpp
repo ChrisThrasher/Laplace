@@ -2,32 +2,16 @@
 
 #include <Laplace/Fft.hpp>
 #include <Laplace/Filter.hpp>
+#include <Laplace/Rng.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <imgui-SFML.h>
 #include <imgui.h>
 #include <implot.h>
 
-#include <algorithm>
-#include <array>
-#include <numeric>
-#include <random>
-
 using namespace std::chrono_literals;
 
 namespace {
-
-[[nodiscard]] auto& rng()
-{
-    thread_local auto generator = []() {
-        auto seed_data = std::array<std::random_device::result_type, std::mt19937::state_size>();
-        auto random_device = std::random_device();
-        std::generate_n(seed_data.data(), seed_data.size(), std::ref(random_device));
-        auto sequence = std::seed_seq(seed_data.begin(), seed_data.end());
-        return std::mt19937(sequence);
-    }();
-    return generator;
-}
 
 [[nodiscard]] auto generate_signal()
 {
@@ -40,7 +24,7 @@ namespace {
     for (std::size_t i = 0; i < signal.size(); ++i) {
         const auto t = i * dt;
         const auto frequency = lp::radians_per_second((lp::hertz(0.2) * t).as_radians());
-        signal[i] = { cos(frequency * t) + dc_gain + noise(rng()) };
+        signal[i] = { cos(frequency * t) + dc_gain + noise(lp::rng()) };
     }
 
     return std::make_pair(signal, dt);

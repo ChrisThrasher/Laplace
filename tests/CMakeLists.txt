@@ -11,6 +11,7 @@ add_executable(test-laplace
     Frequency.cpp
     HighPass.cpp
     LowPass.cpp
+    Rng.cpp
 )
 target_link_libraries(test-laplace PRIVATE Laplace::Laplace Catch2::Catch2WithMain)
 target_compile_options(test-laplace PRIVATE ${LAPLACE_WARNINGS})
