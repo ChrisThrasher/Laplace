@@ -25,7 +25,7 @@ jobs:
         - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
         - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
         - { name: Linux Intel,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=icpx }
-        - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DBUILD_EXAMPLES=OFF }
+        - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DLAPLACE_BUILD_EXAMPLES=OFF }
         - { name: macOS Clang,     os: macos-12,     flags: -GNinja }
         type:
         - { name: Static, flags: "OFF" }
@@ -80,7 +80,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_CXX_FLAGS=--coverage
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DLAPLACE_BUILD_TESTING=ON -DCMAKE_CXX_FLAGS=--coverage
 
     - name: Build
       run: cmake --build build
@@ -143,7 +143,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
-      run: cmake --preset dev -DBUILD_EXAMPLES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -fsanitize=address,undefined"
+      run: cmake --preset dev -DLAPLACE_BUILD_EXAMPLES=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -fsanitize=address,undefined"
 
     - name: Build
       run: cmake --build build

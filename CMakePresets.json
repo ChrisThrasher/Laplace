@@ -6,13 +6,13 @@
       "binaryDir": "build",
       "installDir": "${sourceDir}/build/install",
       "cacheVariables": {
-        "BUILD_EXAMPLES": "ON",
-        "BUILD_TESTING": "ON",
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
-        "LAPLACE_WARNINGS_AS_ERRORS": "ON"
+        "LAPLACE_ENABLE_WARNINGS": "ON",
+        "LAPLACE_BUILD_EXAMPLES": "ON",
+        "LAPLACE_BUILD_TESTING": "ON"
       }
     }
   ],

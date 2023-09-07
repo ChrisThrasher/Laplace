@@ -1,21 +1,18 @@
 cmake_minimum_required(VERSION 3.22)
 project(Laplace VERSION 0.0.0 LANGUAGES CXX DESCRIPTION "Linear filters library")
 
-include(CMakePackageConfigHelpers)
-include(GenerateExportHeader)
-include(GNUInstallDirs)
-
-# Apply compiler warnings
-option(LAPLACE_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
-if(NOT PROJECT_IS_TOP_LEVEL)
-    set(LAPLACE_WARNINGS "")
-elseif(MSVC)
-    set(LAPLACE_WARNINGS $<$<BOOL:${LAPLACE_WARNINGS_AS_ERRORS}>:/WX> /W4 /permissive- /wd4251)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
-    set(LAPLACE_WARNINGS $<$<BOOL:${LAPLACE_WARNINGS_AS_ERRORS}>:-Werror> -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion -Wold-style-cast)
+# Add compiler warnings
+option(LAPLACE_ENABLE_WARNINGS "Enable compiler warnings" OFF)
+if(LAPLACE_ENABLE_WARNINGS)
+    if(MSVC)
+        set(LAPLACE_WARNINGS /WX /W4 /permissive- /wd4251)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
+        set(LAPLACE_WARNINGS -Werror -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion -Wold-style-cast)
+    endif()
 endif()
 
 # Add library
+include(GenerateExportHeader)
 add_library(Laplace INTERFACE)
 add_library(Laplace::Laplace ALIAS Laplace)
 target_include_directories(Laplace INTERFACE
@@ -33,6 +30,8 @@ target_compile_features(Laplace INTERFACE cxx_std_17)
 # endif()
 
 # Install library
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ # ${PROJECT_BINARY_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Laplace-${PROJECT_VERSION})
 install(TARGETS Laplace EXPORT LaplaceTargets
@@ -57,14 +56,14 @@ endif()
 set(BUILD_SHARED_LIBS OFF)
 
 # Add examples
-option(BUILD_EXAMPLES "Build examples" OFF)
-if(BUILD_EXAMPLES)
+option(LAPLACE_BUILD_EXAMPLES "Build examples" OFF)
+if(LAPLACE_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
 # Add tests
-option(BUILD_TESTING "Build tests" OFF)
-if(BUILD_TESTING)
+option(LAPLACE_BUILD_TESTING "Build tests" OFF)
+if(LAPLACE_BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()
