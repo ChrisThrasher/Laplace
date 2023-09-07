@@ -22,13 +22,13 @@ set(SFML_BUILD_NETWORK OFF)
 set(SFML_WARNINGS_AS_ERRORS OFF)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML
-    GIT_TAG 6d3c8d07866b94beba2bf6fd00cde3d1678e3355)
+    GIT_TAG master)
 FetchContent_MakeAvailable(SFML)
 
 set(IMGUI_SFML_FIND_SFML OFF)
 FetchContent_Declare(ImGui-SFML
     GIT_REPOSITORY https://github.com/SFML/imgui-sfml
-    GIT_TAG v2.6)
+    GIT_TAG master)
 FetchContent_MakeAvailable(ImGui-SFML)
 
 # Add ImPlot sources to ImGui-SFML
