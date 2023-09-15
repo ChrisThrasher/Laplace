@@ -21,7 +21,6 @@ FetchContent_GetProperties(ImPlot SOURCE_DIR IMPLOT_DIR)
 
 set(SFML_BUILD_AUDIO OFF)
 set(SFML_BUILD_NETWORK OFF)
-set(SFML_WARNINGS_AS_ERRORS OFF)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML
     GIT_TAG master
