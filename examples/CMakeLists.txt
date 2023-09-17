@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.25)
+
 include(FetchContent)
 
 # Disable installation of 3rd party libraries
@@ -8,14 +10,16 @@ endmacro()
 FetchContent_Declare(ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui
     GIT_TAG v1.89.9
-    GIT_SHALLOW ON)
+    GIT_SHALLOW ON
+    SYSTEM)
 FetchContent_MakeAvailable(ImGui)
 FetchContent_GetProperties(ImGui SOURCE_DIR IMGUI_DIR)
 
 FetchContent_Declare(ImPlot
     GIT_REPOSITORY https://github.com/epezent/implot
     GIT_TAG v0.16
-    GIT_SHALLOW ON)
+    GIT_SHALLOW ON
+    SYSTEM)
 FetchContent_MakeAvailable(ImPlot)
 FetchContent_GetProperties(ImPlot SOURCE_DIR IMPLOT_DIR)
 
@@ -24,14 +28,16 @@ set(SFML_BUILD_NETWORK OFF)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML
     GIT_TAG master
-    GIT_SHALLOW ON)
+    GIT_SHALLOW ON
+    SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
 set(IMGUI_SFML_FIND_SFML OFF)
 FetchContent_Declare(ImGui-SFML
     GIT_REPOSITORY https://github.com/SFML/imgui-sfml
     GIT_TAG master
-    GIT_SHALLOW ON)
+    GIT_SHALLOW ON
+    SYSTEM)
 FetchContent_MakeAvailable(ImGui-SFML)
 
 # Add ImPlot sources to ImGui-SFML
