@@ -3,6 +3,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Catch2 3.4.0 REQUIRED)
 include(Catch)
 
+add_compile_options(${LAPLACE_WARNINGS})
+
 # Test library
 add_executable(test-laplace
     Angle.cpp
@@ -14,7 +16,6 @@ add_executable(test-laplace
     Rng.cpp
 )
 target_link_libraries(test-laplace PRIVATE Laplace::Laplace Catch2::Catch2WithMain)
-target_compile_options(test-laplace PRIVATE ${LAPLACE_WARNINGS})
 catch_discover_tests(test-laplace)
 
 # Test install interface
