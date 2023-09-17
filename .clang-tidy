@@ -30,6 +30,6 @@ CheckOptions:
   - { key: readability-identifier-naming.PrivateMemberPrefix, value: m_ }
   - { key: readability-function-cognitive-complexity.Threshold,    value: 15   }
   - { key: readability-function-cognitive-complexity.IgnoreMacros, value: True }
-HeaderFilterRegex: '(./include/Laplace|.examples)'
+HeaderFilterRegex: '.*'
 WarningsAsErrors: '*'
 UseColor: true
