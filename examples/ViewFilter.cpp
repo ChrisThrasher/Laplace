@@ -30,8 +30,9 @@ namespace {
     return std::make_pair(signal, dt);
 }
 
-[[nodiscard]] auto
-run_filter(lp::Filter<double>& filter, const std::vector<double>& input, const std::chrono::nanoseconds dt)
+[[nodiscard]] auto run_filter(lp::Filter<double>& filter,
+                              const std::vector<double>& input,
+                              const std::chrono::nanoseconds dt)
 {
     assert(input.size() >= 2);
     auto output = std::vector<double>(input.size());

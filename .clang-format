@@ -6,6 +6,7 @@ AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false
 ColumnLimit: 120
+PenaltyReturnTypeOnItsOwnLine: 100
 QualifierAlignment: Left
 
 IncludeBlocks: Regroup
