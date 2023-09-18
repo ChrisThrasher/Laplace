@@ -62,6 +62,12 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
             STATIC_CHECK(lp::radians<TestType>(4) / TestType(4) == lp::radians<TestType>(1));
             STATIC_CHECK(lp::radians<TestType>(0) / TestType(10) == lp::radians<TestType>(0));
         }
+
+        SECTION("operator(()")
+        {
+            STATIC_CHECK(lp::radians<TestType>(4) * TestType(4) == lp::radians<TestType>(16));
+            STATIC_CHECK(lp::radians<TestType>(0) * TestType(10) == lp::radians<TestType>(0));
+        }
     }
 
     SECTION("Trigonometry")

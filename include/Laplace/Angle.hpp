@@ -67,6 +67,12 @@ template <typename ValueType>
 }
 
 template <typename ValueType>
+[[nodiscard]] constexpr Angle<ValueType> operator*(Angle<ValueType> lhs, ValueType factor)
+{
+    return radians(lhs.as_radians() * factor);
+}
+
+template <typename ValueType>
 [[nodiscard]] ValueType exp(Angle<ValueType> angle)
 {
     return std::exp(angle.as_radians());
