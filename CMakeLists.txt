@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(Laplace VERSION 0.0.0 LANGUAGES CXX DESCRIPTION "Linear filters library")
+project(Laplace VERSION 0.0.1 LANGUAGES CXX DESCRIPTION "Linear filters library")
 
 # Add compiler warnings
 option(LAPLACE_ENABLE_WARNINGS "Enable compiler warnings" OFF)
