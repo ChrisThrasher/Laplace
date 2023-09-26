@@ -9,7 +9,6 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
-  -bugprone-exception-escape,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-union-access,
