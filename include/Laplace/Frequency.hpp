@@ -92,4 +92,12 @@ template <typename ValueType>
 {
     return radians_per_second(factor * frequency.as_radians_per_second());
 }
+
+template <typename ValueType, typename Rep, typename Period>
+[[nodiscard]] constexpr Frequency<ValueType> operator/(Angle<ValueType> angle,
+                                                       std::chrono::duration<Rep, Period> duration)
+{
+    return radians_per_second(angle.as_radians()
+                              / std::chrono::duration_cast<std::chrono::duration<ValueType>>(duration).count());
+}
 }

@@ -43,6 +43,8 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 
     SECTION("Operators")
     {
+        using namespace std::chrono_literals;
+
         SECTION("operator<<()")
         {
             auto stream = std::ostringstream();
@@ -72,7 +74,6 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 
         SECTION("operator*(Frequency, std::chrono::duration)")
         {
-            using namespace std::chrono_literals;
             STATIC_CHECK(lp::radians_per_second<TestType>(4) * 0s == lp::radians<TestType>(0));
             STATIC_CHECK(lp::radians_per_second<TestType>(4) * 1s == lp::radians<TestType>(4));
             STATIC_CHECK(lp::radians_per_second<TestType>(4) * 10s == lp::radians<TestType>(40));
@@ -80,7 +81,6 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
 
         SECTION("operator*(std::chrono::duration, Frequency)")
         {
-            using namespace std::chrono_literals;
             STATIC_CHECK(0s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(0));
             STATIC_CHECK(1s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(4));
             STATIC_CHECK(10s * lp::radians_per_second<TestType>(4) == lp::radians<TestType>(40));
@@ -91,6 +91,13 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
             STATIC_CHECK(TestType(0) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(0));
             STATIC_CHECK(TestType(2) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(20));
             STATIC_CHECK(TestType(20) * lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(200));
+        }
+
+        SECTION("operator/(Angle, std::chrono::duration)")
+        {
+            STATIC_CHECK(lp::degrees<TestType>(360) / 1s == lp::hertz<TestType>(1));
+            STATIC_CHECK(lp::radians<TestType>(5) / 1s == lp::radians_per_second<TestType>(5));
+            STATIC_CHECK(lp::radians<TestType>(3600) / 1min == lp::radians_per_second<TestType>(60));
         }
     }
 }
