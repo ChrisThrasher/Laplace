@@ -3,6 +3,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Catch2 3.4.0 REQUIRED)
 include(Catch)
 
+option(LAPLACE_RUN_CONSTEXPR_TESTS "Run constexpr tests at runtime" OFF)
+
 add_compile_options(${LAPLACE_WARNINGS})
 
 # Test library
@@ -16,6 +18,9 @@ add_executable(test-laplace
     Rng.cpp
 )
 target_link_libraries(test-laplace PRIVATE Laplace::Laplace Catch2::Catch2WithMain)
+if(LAPLACE_RUN_CONSTEXPR_TESTS)
+    target_compile_definitions(test-laplace PRIVATE CATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
+endif()
 catch_discover_tests(test-laplace)
 
 # Test install interface
