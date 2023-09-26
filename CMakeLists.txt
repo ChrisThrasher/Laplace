@@ -15,9 +15,8 @@ endif()
 include(GenerateExportHeader)
 add_library(Laplace src/Rng.cpp)
 add_library(Laplace::Laplace ALIAS Laplace)
-target_include_directories(Laplace PUBLIC
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
+target_include_directories(Laplace PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
+target_include_directories(Laplace SYSTEM PUBLIC $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 target_compile_features(Laplace PUBLIC cxx_std_17)
 target_compile_options(Laplace PRIVATE ${LAPLACE_WARNINGS})
 set_target_properties(Laplace PROPERTIES
