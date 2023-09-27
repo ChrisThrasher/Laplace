@@ -21,7 +21,7 @@ jobs:
         - { name: Windows MSVC,    os: windows-2022 }
         - { name: Windows ClangCL, os: windows-2022, flags: -T ClangCL }
         - { name: Windows Clang,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Windows MinGW,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=g++ -DLAPLACE_BUILD_EXAMPLES=OFF }
+        - { name: Windows MinGW,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=g++ }
         - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
         - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
         - { name: Linux Intel,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=icpx }
@@ -40,7 +40,10 @@ jobs:
     steps:
     - name: Install Windows Dependencies
       if: runner.os == 'Windows'
-      run: choco install ninja
+      run: |
+        choco uninstall mingw
+        choco install mingw --version 11.2.0
+        choco install ninja
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
