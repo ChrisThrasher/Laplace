@@ -40,10 +40,13 @@ jobs:
     steps:
     - name: Install Windows Dependencies
       if: runner.os == 'Windows'
+      run: choco install ninja
+
+    - name: Install MinGW
+      if: matrix.platform.name == 'Windows MinGW'
       run: |
         choco uninstall mingw
         choco install mingw --version 11.2.0
-        choco install ninja
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
