@@ -24,7 +24,6 @@ jobs:
         - { name: Windows MinGW,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=g++ }
         - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
         - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Linux Intel,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=icpx }
         - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DLAPLACE_BUILD_EXAMPLES=OFF }
         - { name: macOS Clang,     os: macos-12,     flags: -GNinja }
         type:
@@ -33,9 +32,6 @@ jobs:
         config:
         - { name: Debug }
         - { name: Release }
-        exclude:
-        - platform: { name: Linux Intel }
-          config: { name: Release }
 
     steps:
     - name: Install Windows Dependencies
@@ -51,16 +47,6 @@ jobs:
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
       run: sudo apt update && sudo apt install ninja-build libxrandr-dev libxcursor-dev libudev-dev libgl1-mesa-dev libegl1-mesa-dev
-
-    - name: Install Intel compiler
-      if: matrix.platform.name == 'Linux Intel'
-      run: |
-        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
-          | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-        sudo apt update && sudo apt install intel-oneapi-compiler-dpcpp-cpp
-        source /opt/intel/oneapi/setvars.sh
-        printenv >> $GITHUB_ENV
 
     - name: Install macOS Dependencies
       if: runner.os == 'macOS'
