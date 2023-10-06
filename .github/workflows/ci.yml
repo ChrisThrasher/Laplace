@@ -76,7 +76,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DLAPLACE_BUILD_TESTING=ON -DCMAKE_CXX_FLAGS=--coverage
+      run: cmake --preset dev -DCMAKE_CXX_FLAGS=--coverage -DLAPLACE_BUILD_EXAMPLES=OFF
 
     - name: Build
       run: cmake --build build
