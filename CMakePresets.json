@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 5,
   "configurePresets":[
     {
       "name": "dev",
@@ -10,6 +10,7 @@
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
+        "CMAKE_VERIFY_INTERFACE_HEADER_SETS": "ON",
         "LAPLACE_ENABLE_WARNINGS": "ON",
         "LAPLACE_BUILD_EXAMPLES": "ON",
         "LAPLACE_BUILD_TESTING": "ON"

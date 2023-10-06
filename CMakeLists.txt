@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.24)
 project(Laplace VERSION 0.0.1 LANGUAGES CXX DESCRIPTION "Linear filters library")
 
 # Add compiler warnings
@@ -15,7 +15,19 @@ endif()
 include(GenerateExportHeader)
 add_library(Laplace src/Rng.cpp)
 add_library(Laplace::Laplace ALIAS Laplace)
-target_include_directories(Laplace PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
+target_sources(Laplace PUBLIC
+    FILE_SET HEADERS
+    BASE_DIRS include ${PROJECT_BINARY_DIR}/include
+    FILES
+        include/Laplace/Angle.hpp
+        include/Laplace/Fft.hpp
+        include/Laplace/Filter.hpp
+        include/Laplace/Frequency.hpp
+        include/Laplace/HighPass.hpp
+        include/Laplace/LowPass.hpp
+        include/Laplace/Rng.hpp
+        ${PROJECT_BINARY_DIR}/include/Laplace/Export.hpp
+)
 target_include_directories(Laplace SYSTEM PUBLIC $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 target_compile_features(Laplace PUBLIC cxx_std_20)
 target_compile_options(Laplace PRIVATE ${LAPLACE_WARNINGS})
@@ -31,13 +43,11 @@ endif()
 # Install library
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ ${PROJECT_BINARY_DIR}/include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Laplace-${PROJECT_VERSION})
 install(TARGETS Laplace EXPORT LaplaceTargets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/Laplace-${PROJECT_VERSION}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/Laplace-${PROJECT_VERSION}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/Laplace-${PROJECT_VERSION}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Laplace-${PROJECT_VERSION})
+        FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Laplace-${PROJECT_VERSION})
 install(EXPORT LaplaceTargets
         NAMESPACE Laplace::
         DESTINATION ${CMAKE_INSTALL_DATADIR}/Laplace-${PROJECT_VERSION}

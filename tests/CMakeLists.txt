@@ -23,6 +23,11 @@ if(LAPLACE_RUN_CONSTEXPR_TESTS)
 endif()
 catch_discover_tests(test-laplace)
 
+# Test header compilation
+add_test(
+    NAME "Individual header compilation"
+    COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR} --target all_verify_interface_header_sets)
+
 # Test install interface
 add_test(NAME "Install Laplace" COMMAND
     ${CMAKE_COMMAND}
