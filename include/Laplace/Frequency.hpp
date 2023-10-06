@@ -7,15 +7,13 @@
 namespace lp {
 
 namespace detail {
-    template <typename ValueType>
+    template <std::floating_point ValueType>
     constexpr auto tau = 2 * pi<ValueType>;
 }
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 class Frequency {
 public:
-    static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
-
     constexpr Frequency() = default;
 
     [[nodiscard]] constexpr ValueType as_radians_per_second() const { return m_radians_per_second; }

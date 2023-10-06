@@ -1,15 +1,13 @@
 #pragma once
 
 #include <chrono>
-#include <type_traits>
+#include <concepts>
 
 namespace lp {
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 class Filter {
 public:
-    static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
-
     Filter() = default;
     virtual ~Filter() = default;
     Filter(const Filter&) = default;

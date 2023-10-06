@@ -1,21 +1,19 @@
 #pragma once
 
 #include <cmath>
+#include <concepts>
 #include <ostream>
-#include <type_traits>
 
 namespace lp {
 
 namespace detail {
-    template <typename ValueType>
+    template <std::floating_point ValueType>
     constexpr auto pi = ValueType(3.1415926535897932385L);
 }
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 class Angle {
 public:
-    static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
-
     constexpr Angle() = default;
 
     [[nodiscard]] constexpr ValueType as_radians() const { return m_radians; }

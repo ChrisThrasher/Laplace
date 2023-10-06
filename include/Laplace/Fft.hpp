@@ -9,10 +9,8 @@
 
 namespace lp {
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 struct DftDatum {
-    static_assert(std::is_floating_point_v<ValueType>, "ValueType must be floating point");
-
     lp::Frequency<ValueType> frequency;
     lp::Angle<ValueType> phase;
     ValueType amplitude {};
