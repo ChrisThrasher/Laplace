@@ -31,7 +31,7 @@ endif()
 # Install library
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ # ${PROJECT_BINARY_DIR}/include/
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ ${PROJECT_BINARY_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Laplace-${PROJECT_VERSION})
 install(TARGETS Laplace EXPORT LaplaceTargets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/Laplace-${PROJECT_VERSION}
