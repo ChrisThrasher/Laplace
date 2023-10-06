@@ -59,7 +59,7 @@ jobs:
       run: cmake --preset dev ${{ matrix.platform.flags }} -DBUILD_SHARED_LIBS=${{ matrix.type.flags }} -DCMAKE_BUILD_TYPE=${{ matrix.config.name }} -DCMAKE_VERBOSE_MAKEFILE=ON
 
     - name: Build
-      run: cmake --build --preset dev --config ${{ matrix.config.name }}
+      run: cmake --build --preset dev --config ${{ matrix.config.name }} --target install
 
     - name: Test
       run: ctest --preset dev --build-config ${{ matrix.config.name }}
