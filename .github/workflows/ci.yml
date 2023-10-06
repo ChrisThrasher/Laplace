@@ -21,7 +21,6 @@ jobs:
         - { name: Windows MSVC,    os: windows-2022 }
         - { name: Windows ClangCL, os: windows-2022, flags: -T ClangCL }
         - { name: Windows Clang,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Windows MinGW,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=g++ }
         - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
         - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
         - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DLAPLACE_BUILD_EXAMPLES=OFF }
@@ -37,12 +36,6 @@ jobs:
     - name: Install Windows Dependencies
       if: runner.os == 'Windows'
       run: choco install ninja
-
-    - name: Install MinGW
-      if: matrix.platform.name == 'Windows MinGW'
-      run: |
-        choco uninstall mingw
-        choco install mingw --version 11.2.0
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
