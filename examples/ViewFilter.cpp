@@ -62,8 +62,8 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
     const auto output = run_filter(filter, input, dt);
     const auto signal_width = std::chrono::duration_cast<std::chrono::duration<double>>(dt).count();
 
-    auto input_freqs = lp::fft(input, dt);
-    auto output_freqs = lp::fft(output, dt);
+    auto input_freqs = lp::fft(std::span(input), dt);
+    auto output_freqs = lp::fft(std::span(output), dt);
     const auto input_width = (input_freqs[1].frequency - input_freqs[0].frequency).as_hertz();
     const auto output_width = input_width * 0.6;
 

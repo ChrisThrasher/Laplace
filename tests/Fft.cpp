@@ -46,14 +46,14 @@ TEMPLATE_TEST_CASE("lp::fft", "", float, double, long double)
 
     SECTION("Minimal signal of zeroes")
     {
-        CHECK(lp::fft<TestType>({ 0, 0 }, 10ms)
+        CHECK(lp::fft<TestType>(std::span<const TestType>({ 0, 0 }), 10ms)
               == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
                                                        { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 } });
     }
 
     SECTION("Minimal signal of zeroes")
     {
-        CHECK(lp::fft<TestType>({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 1s)
+        CHECK(lp::fft<TestType>(std::span<const TestType>({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }), 1s)
               == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
                                                        { lp::hertz<TestType>(1), lp::degrees<TestType>(0), 0 },
                                                        { lp::hertz<TestType>(2), lp::degrees<TestType>(0), 0 },
@@ -68,7 +68,7 @@ TEMPLATE_TEST_CASE("lp::fft", "", float, double, long double)
 
     SECTION("Non-zero DC gain")
     {
-        CHECK(lp::fft<TestType>({ 1, 1, 1 }, 20ms)
+        CHECK(lp::fft<TestType>(std::span<const TestType>({ 1, 1, 1 }), 20ms)
               == std::vector<lp::DftDatum<TestType>> { { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 1 },
                                                        { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 },
                                                        { lp::hertz<TestType>(0), lp::degrees<TestType>(0), 0 } });

@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <complex>
+#include <span>
 #include <tuple>
 #include <vector>
 
@@ -25,7 +26,7 @@ std::ostream& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
 }
 
 template <typename ValueType>
-[[nodiscard]] auto fft(const std::vector<ValueType>& signal, const std::chrono::nanoseconds duration)
+[[nodiscard]] auto fft(const std::span<const ValueType> signal, const std::chrono::nanoseconds duration)
 {
     assert(signal.size() >= 2);
 
