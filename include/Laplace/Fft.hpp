@@ -14,18 +14,14 @@ struct DftDatum {
     lp::Frequency<ValueType> frequency;
     lp::Angle<ValueType> phase;
     ValueType amplitude {};
+
+    [[nodiscard]] constexpr auto operator<=>(const DftDatum&) const = default;
 };
 
 template <typename ValueType>
 std::ostream& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
 {
     return stream << "{ " << dft_datum.frequency << ", " << dft_datum.phase << ", " << dft_datum.amplitude << " }";
-}
-
-template <typename ValueType>
-[[nodiscard]] constexpr bool operator==(const DftDatum<ValueType>& lhs, const DftDatum<ValueType>& rhs)
-{
-    return std::tie(lhs.frequency, lhs.phase, lhs.amplitude) == std::tie(rhs.frequency, rhs.phase, rhs.amplitude);
 }
 
 template <typename ValueType>

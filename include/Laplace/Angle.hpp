@@ -19,6 +19,8 @@ public:
     [[nodiscard]] constexpr ValueType as_radians() const { return m_radians; }
     [[nodiscard]] constexpr ValueType as_degrees() const { return m_radians * 180 / detail::pi<ValueType>; }
 
+    [[nodiscard]] constexpr auto operator<=>(const Angle&) const = default;
+
 private:
     constexpr explicit Angle(ValueType radians)
         : m_radians(radians)
@@ -50,12 +52,6 @@ template <typename ValueType>
 [[nodiscard]] constexpr Angle<ValueType> degrees(ValueType degrees)
 {
     return Angle(degrees * detail::pi<ValueType> / 180);
-}
-
-template <typename ValueType>
-[[nodiscard]] constexpr bool operator==(Angle<ValueType> lhs, Angle<ValueType> rhs)
-{
-    return lhs.as_radians() == rhs.as_radians();
 }
 
 template <typename ValueType>

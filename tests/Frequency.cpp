@@ -45,6 +45,13 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
     {
         using namespace std::chrono_literals;
 
+        SECTION("operator<=>()")
+        {
+            STATIC_CHECK(lp::hertz<TestType>(0) == lp::radians_per_second<TestType>(0));
+            STATIC_CHECK(lp::hertz<TestType>(10) < lp::hertz<TestType>(11));
+            STATIC_CHECK(lp::radians_per_second<TestType>(10) > lp::radians_per_second<TestType>(9));
+        }
+
         SECTION("operator<<()")
         {
             auto stream = std::ostringstream();
@@ -63,13 +70,6 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
         {
             STATIC_CHECK(-lp::hertz<TestType>(42).as_hertz() == -42);
             STATIC_CHECK(-lp::radians_per_second<TestType>(-3.14f).as_radians_per_second() == TestType(3.14f));
-        }
-
-        SECTION("operator==()")
-        {
-            STATIC_CHECK(lp::hertz<TestType>(0) == lp::radians_per_second<TestType>(0));
-            STATIC_CHECK(lp::hertz<TestType>(10) == lp::hertz<TestType>(10));
-            STATIC_CHECK(lp::radians_per_second<TestType>(10) == lp::radians_per_second<TestType>(10));
         }
 
         SECTION("operator*(Frequency, std::chrono::duration)")

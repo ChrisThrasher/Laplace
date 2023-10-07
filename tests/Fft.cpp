@@ -24,18 +24,18 @@ TEMPLATE_TEST_CASE("lp::DftDatum", "", float, double, long double)
 
     SECTION("Operators")
     {
+        SECTION("operator<=>()")
+        {
+            STATIC_CHECK(lp::DftDatum<TestType>() == lp::DftDatum<TestType>());
+            STATIC_CHECK(lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 }
+                         == lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 });
+        }
+
         SECTION("operator<<()")
         {
             auto stream = std::ostringstream();
             stream << lp::DftDatum<TestType> { lp::radians_per_second<TestType>(1), lp::radians<TestType>(2), 3 };
             CHECK(stream.str() == "{ 1 rad/s, 2 rad, 3 }");
-        }
-
-        SECTION("operator==()")
-        {
-            STATIC_CHECK(lp::DftDatum<TestType>() == lp::DftDatum<TestType>());
-            STATIC_CHECK(lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 }
-                         == lp::DftDatum<TestType> { lp::hertz<TestType>(1), lp::degrees<TestType>(2), 3 });
         }
     }
 }

@@ -19,6 +19,8 @@ public:
     [[nodiscard]] constexpr ValueType as_radians_per_second() const { return m_radians_per_second; }
     [[nodiscard]] constexpr ValueType as_hertz() const { return m_radians_per_second / detail::tau<ValueType>; }
 
+    [[nodiscard]] constexpr auto operator<=>(const Frequency&) const = default;
+
 private:
     constexpr explicit Frequency(ValueType radians_per_second)
         : m_radians_per_second(radians_per_second)
@@ -62,12 +64,6 @@ template <typename ValueType>
 [[nodiscard]] constexpr Frequency<ValueType> operator-(Frequency<ValueType> frequency)
 {
     return radians_per_second(-frequency.as_radians_per_second());
-}
-
-template <typename ValueType>
-[[nodiscard]] constexpr bool operator==(Frequency<ValueType> lhs, Frequency<ValueType> rhs)
-{
-    return lhs.as_radians_per_second() == rhs.as_radians_per_second();
 }
 
 template <typename ValueType, typename Rep, typename Period>

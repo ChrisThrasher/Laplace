@@ -13,6 +13,7 @@ Checks: >
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-union-access,
   -misc-include-cleaner,
+  -misc-non-private-member-variables-in-classes,
   -modernize-use-trailing-return-type,
   -readability-braces-around-statements,
   -readability-identifier-length,

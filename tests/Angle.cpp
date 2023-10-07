@@ -43,18 +43,32 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
 
     SECTION("Operators")
     {
+        SECTION("operator<=>()")
+        {
+            STATIC_CHECK(lp::degrees<TestType>(0) == lp::radians<TestType>(0));
+            STATIC_CHECK(lp::degrees<TestType>(10) == lp::degrees<TestType>(10));
+
+            STATIC_CHECK(lp::degrees<TestType>(0) != lp::radians<TestType>(1));
+            STATIC_CHECK(lp::degrees<TestType>(10) != lp::degrees<TestType>(11));
+
+            STATIC_CHECK(lp::radians<TestType>(2) > lp::radians<TestType>(1));
+            STATIC_CHECK(lp::radians<TestType>(1) > lp::radians<TestType>(-1));
+
+            STATIC_CHECK(lp::radians<TestType>(2) >= lp::radians<TestType>(1));
+            STATIC_CHECK(lp::radians<TestType>(2) >= lp::radians<TestType>(2));
+
+            STATIC_CHECK(lp::radians<TestType>(1) < lp::radians<TestType>(2));
+            STATIC_CHECK(lp::radians<TestType>(-1) < lp::radians<TestType>(1));
+
+            STATIC_CHECK(lp::radians<TestType>(1) <= lp::radians<TestType>(2));
+            STATIC_CHECK(lp::radians<TestType>(2) <= lp::radians<TestType>(2));
+        }
+
         SECTION("operator<<()")
         {
             auto stream = std::ostringstream();
             stream << lp::radians<TestType>(3.14f);
             CHECK(stream.str() == "3.14 rad");
-        }
-
-        SECTION("operator==()")
-        {
-            STATIC_CHECK(lp::degrees<TestType>(0) == lp::radians<TestType>(0));
-            STATIC_CHECK(lp::degrees<TestType>(10) == lp::degrees<TestType>(10));
-            STATIC_CHECK(lp::radians<TestType>(3.14f) == lp::radians<TestType>(3.14f));
         }
 
         SECTION("operator/()")
