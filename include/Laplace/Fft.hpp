@@ -25,7 +25,7 @@ std::ostream& operator<<(std::ostream& stream, DftDatum<ValueType> dft_datum)
     return stream << "{ " << dft_datum.frequency << ", " << dft_datum.phase << ", " << dft_datum.amplitude << " }";
 }
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 [[nodiscard]] auto fft(const std::span<const ValueType> signal, const std::chrono::nanoseconds duration)
 {
     assert(signal.size() >= 2);
