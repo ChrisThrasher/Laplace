@@ -2,14 +2,10 @@
 
 #include <cmath>
 #include <concepts>
+#include <numbers>
 #include <ostream>
 
 namespace lp {
-
-namespace detail {
-    template <std::floating_point ValueType>
-    constexpr auto pi = ValueType(3.1415926535897932385L);
-}
 
 template <std::floating_point ValueType>
 class Angle {
@@ -17,7 +13,7 @@ public:
     constexpr Angle() = default;
 
     [[nodiscard]] constexpr ValueType as_radians() const { return m_radians; }
-    [[nodiscard]] constexpr ValueType as_degrees() const { return m_radians * 180 / detail::pi<ValueType>; }
+    [[nodiscard]] constexpr ValueType as_degrees() const { return m_radians * 180 / std::numbers::pi_v<ValueType>; }
 
     [[nodiscard]] constexpr auto operator<=>(const Angle&) const = default;
 
@@ -51,7 +47,7 @@ template <typename ValueType>
 template <typename ValueType>
 [[nodiscard]] constexpr Angle<ValueType> degrees(ValueType degrees)
 {
-    return Angle(degrees * detail::pi<ValueType> / 180);
+    return Angle(degrees * std::numbers::pi_v<ValueType> / 180);
 }
 
 template <typename ValueType>

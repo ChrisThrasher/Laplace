@@ -6,18 +6,16 @@
 
 namespace lp {
 
-namespace detail {
-    template <std::floating_point ValueType>
-    constexpr auto tau = 2 * pi<ValueType>;
-}
-
 template <std::floating_point ValueType>
 class Frequency {
 public:
     constexpr Frequency() = default;
 
     [[nodiscard]] constexpr ValueType as_radians_per_second() const { return m_radians_per_second; }
-    [[nodiscard]] constexpr ValueType as_hertz() const { return m_radians_per_second / detail::tau<ValueType>; }
+    [[nodiscard]] constexpr ValueType as_hertz() const
+    {
+        return m_radians_per_second / (2 * std::numbers::pi_v<ValueType>);
+    }
 
     [[nodiscard]] constexpr auto operator<=>(const Frequency&) const = default;
 
@@ -51,7 +49,7 @@ template <typename ValueType>
 template <typename ValueType>
 [[nodiscard]] constexpr Frequency<ValueType> hertz(ValueType hertz)
 {
-    return Frequency(hertz * detail::tau<ValueType>);
+    return Frequency(hertz * 2 * std::numbers::pi_v<ValueType>);
 }
 
 template <typename ValueType>
