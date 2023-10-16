@@ -41,6 +41,12 @@ TEMPLATE_TEST_CASE("lp::Angle", "", float, double, long double)
         }
     }
 
+    SECTION("std::formatter")
+    {
+        STATIC_CHECK(std::format("{:.3f}", lp::radians<TestType>(3.1415f)) == "3.141 rad");
+        STATIC_CHECK(std::format("{:.2f}", lp::degrees<TestType>(10)) == "0.17 rad");
+    }
+
     SECTION("Operators")
     {
         SECTION("operator<=>()")

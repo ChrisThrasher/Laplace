@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cmath>
 #include <concepts>
+#include <format>
 #include <numbers>
 #include <ostream>
 
@@ -83,3 +84,12 @@ template <typename ValueType>
 }
 
 }
+
+template <std::floating_point ValueType>
+struct std::formatter<lp::Angle<ValueType>> : std::formatter<ValueType> {
+    template <class FormatContext>
+    auto format(lp::Angle<ValueType> angle, FormatContext& format_context) const
+    {
+        return std::format_to(std::formatter<ValueType>::format(angle.as_radians(), format_context), " rad");
+    }
+};
