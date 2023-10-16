@@ -8,7 +8,7 @@
 
 namespace lp {
 
-template <typename ValueType>
+template <std::floating_point ValueType>
 class LowPass final : public Filter<ValueType> {
 public:
     LowPass(Frequency<ValueType> cutoff_frequency, ValueType initial_value)
