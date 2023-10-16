@@ -61,14 +61,14 @@ There are two main ways to depend on Laplace
     FetchContent_MakeAvailable(Laplace)
     ```
 
-    ```
+    ```cmake
     add_subdirectory(external/Laplace)
     ```
 
 No matter what option you pick for retrieving Laplace linking it into your program works the same.
 Simply use the `Laplace::Laplace` CMake target.
 
-```
+```cmake
 add_executable(app main.cpp)
 target_link_libraries(app PRIVATE Laplace::Laplace)
 ```
