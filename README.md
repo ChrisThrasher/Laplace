@@ -3,7 +3,7 @@
 [![CI](https://github.com/ChrisThrasher/Laplace/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrisThrasher/Laplace/actions/workflows/ci.yml)
 [![Code Coverage](https://codecov.io/github/ChrisThrasher/Laplace/branch/main/graph/badge.svg?token=t85cTyvsez)](https://codecov.io/github/ChrisThrasher/Laplace)
 
-Laplace is linear filters library written in C++17.
+Laplace is linear filters library written in C++20.
 
 This library focuses on feedback controls and signal processing of physical systems where the sample rates and the dynamics of the system are typically below 1kHz.
 
@@ -16,10 +16,16 @@ Laplace implements the following filters:
 * Low Pass
 * High Pass
 
+## Compiler Support
+
+Currently the set of tested compilers includes MSVC 19, Clang 14, AppleClang 15, and GCC 11.4.
+
+Laplace uses a modest subset of C++20 features that have widespread support over commonly used compilers.
+The library is continuously tested with the above compilers to ensure compatibility.
+
 ## Installation
 
 You can install Laplace from source with two simple CMake commands.
-The requirements are a C++17-compatible compiler and CMake 3.22 or newer.
 
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
