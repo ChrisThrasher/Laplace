@@ -35,10 +35,10 @@ template <std::floating_point ValueType>
 
     auto transformed = std::vector<DftDatum<ValueType>>(signal.size());
     for (std::size_t k = 0; k < signal.size() / 2; ++k) {
-        const auto frequency = lp::hertz(ValueType(k));
+        const auto frequency = lp::hertz(ValueType(k)) / size;
         auto val = std::complex<ValueType>();
         for (std::size_t n = 0; n < signal.size(); ++n) {
-            const auto phi = (frequency * std::chrono::seconds(n)) / size;
+            const auto phi = frequency * std::chrono::seconds(n);
             val += signal[n] * std::complex(cos(phi), -sin(phi));
         }
         val /= size;

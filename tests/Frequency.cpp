@@ -99,5 +99,11 @@ TEMPLATE_TEST_CASE("lp::Frequency", "", float, double, long double)
             STATIC_CHECK(lp::radians<TestType>(5) / 1s == lp::radians_per_second<TestType>(5));
             STATIC_CHECK(lp::radians<TestType>(3600) / 1min == lp::radians_per_second<TestType>(60));
         }
+
+        SECTION("operator/(Frequency, ValueType)")
+        {
+            STATIC_CHECK(lp::radians_per_second<TestType>(0) / TestType(10) == lp::radians_per_second<TestType>(0));
+            STATIC_CHECK(lp::radians_per_second<TestType>(10) / TestType(10) == lp::radians_per_second<TestType>(1));
+        }
     }
 }

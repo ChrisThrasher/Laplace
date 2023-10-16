@@ -89,7 +89,15 @@ template <typename ValueType, typename Rep, typename Period>
 [[nodiscard]] constexpr Frequency<ValueType> operator/(Angle<ValueType> angle,
                                                        std::chrono::duration<Rep, Period> duration)
 {
+    assert(duration.count() != 0 && "lp::Frequency::operator/: Cannot divide by zero");
     return radians_per_second(angle.as_radians()
                               / std::chrono::duration_cast<std::chrono::duration<ValueType>>(duration).count());
+}
+
+template <typename ValueType>
+[[nodiscard]] constexpr Frequency<ValueType> operator/(Frequency<ValueType> frequency, ValueType divisor)
+{
+    assert(divisor != 0 && "lp::Frequency::operator/: Cannot divide by zero");
+    return radians_per_second(frequency.as_radians_per_second() / divisor);
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cmath>
 #include <concepts>
 #include <numbers>
@@ -51,15 +52,16 @@ template <typename ValueType>
 }
 
 template <typename ValueType>
-[[nodiscard]] constexpr Angle<ValueType> operator/(Angle<ValueType> lhs, ValueType divisor)
+[[nodiscard]] constexpr Angle<ValueType> operator/(Angle<ValueType> angle, ValueType divisor)
 {
-    return radians(lhs.as_radians() / divisor);
+    assert(divisor != 0 && "lp::Angle::operator/: Cannot divide by zero");
+    return radians(angle.as_radians() / divisor);
 }
 
 template <typename ValueType>
-[[nodiscard]] constexpr Angle<ValueType> operator*(Angle<ValueType> lhs, ValueType factor)
+[[nodiscard]] constexpr Angle<ValueType> operator*(Angle<ValueType> angle, ValueType factor)
 {
-    return radians(lhs.as_radians() * factor);
+    return radians(angle.as_radians() * factor);
 }
 
 template <typename ValueType>
