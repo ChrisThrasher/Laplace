@@ -9,7 +9,7 @@
 namespace lp {
 
 template <typename ValueType>
-class HighPass : public Filter<ValueType> {
+class HighPass final : public Filter<ValueType> {
 public:
     HighPass(Frequency<ValueType> cutoff_frequency, ValueType initial_value)
         : m_cutoff_frequency(cutoff_frequency)
