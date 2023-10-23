@@ -42,8 +42,9 @@ template <std::floating_point ValueType>
             val += signal[n] * std::complex(cos(phi), -sin(phi));
         }
         val /= size;
-        transformed[k]
-            = { lp::hertz(std::chrono::duration<ValueType>(k) / duration), lp::radians(std::arg(val)), std::abs(val) };
+        transformed[k] = { .frequency = lp::hertz(std::chrono::duration<ValueType>(k) / duration),
+                           .phase = lp::radians(std::arg(val)),
+                           .amplitude = std::abs(val) };
     }
 
     return transformed;
