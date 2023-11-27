@@ -64,5 +64,9 @@ add_executable(high-pass-example HighPass.cpp)
 target_link_libraries(high-pass-example PRIVATE view-filter)
 add_custom_target(run-high-pass-example COMMAND high-pass-example)
 
+add_executable(butterworth-example Butterworth.cpp)
+target_link_libraries(butterworth-example PRIVATE view-filter)
+add_custom_target(run-butterworth-example COMMAND butterworth-example)
+
 add_custom_target(run-examples)
-add_dependencies(run-examples run-low-pass-example run-high-pass-example)
+add_dependencies(run-examples run-low-pass-example run-high-pass-example run-butterworth-example)
