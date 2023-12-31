@@ -1,6 +1,6 @@
 # Get Catch2
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-find_package(Catch2 3.4.0 REQUIRED)
+find_package(Catch2 3.5.1 REQUIRED)
 include(Catch)
 
 find_package(Threads REQUIRED)
