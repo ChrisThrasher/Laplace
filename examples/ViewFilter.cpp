@@ -69,18 +69,13 @@ void view_filter(const std::string& name, lp::Filter<double>& filter)
 
     auto clock = sf::Clock();
     while (window.isOpen()) {
-        for (auto event = sf::Event(); window.pollEvent(event);) {
-            ImGui::SFML::ProcessEvent(window, event);
-            switch (event.type) {
-            case sf::Event::Closed:
+        while (const std::optional event = window.pollEvent()) {
+            ImGui::SFML::ProcessEvent(window, *event);
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
-                break;
-            case sf::Event::KeyPressed:
-                if (event.key.scancode == sf::Keyboard::Scan::Escape)
+            } else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+                if (keyPressed->scancode == sf::Keyboard::Scan::Escape)
                     window.close();
-                break;
-            default:
-                break;
             }
         }
 

@@ -7,7 +7,7 @@ endmacro()
 # Get 3rd party libraries
 FetchContent_Declare(ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui
-    GIT_TAG v1.89.9
+    GIT_TAG v1.91.1
     GIT_SHALLOW ON
     SYSTEM)
 FetchContent_MakeAvailable(ImGui)
@@ -25,7 +25,7 @@ set(SFML_BUILD_AUDIO OFF)
 set(SFML_BUILD_NETWORK OFF)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML
-    GIT_TAG master
+    GIT_TAG 3.0.0
     GIT_SHALLOW ON
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
@@ -33,7 +33,7 @@ FetchContent_MakeAvailable(SFML)
 set(IMGUI_SFML_FIND_SFML OFF)
 FetchContent_Declare(ImGui-SFML
     GIT_REPOSITORY https://github.com/SFML/imgui-sfml
-    GIT_TAG master
+    GIT_TAG v3.0
     GIT_SHALLOW ON
     SYSTEM)
 FetchContent_MakeAvailable(ImGui-SFML)

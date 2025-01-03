@@ -44,7 +44,7 @@ jobs:
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
-      run: sudo apt update && sudo apt install ninja-build libxrandr-dev libxcursor-dev libudev-dev libgl1-mesa-dev libegl1-mesa-dev
+      run: sudo apt update && sudo apt install ninja-build libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev libegl1-mesa-dev
 
     - name: Install macOS Dependencies
       if: runner.os == 'macOS'
