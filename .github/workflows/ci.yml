@@ -23,8 +23,8 @@ jobs:
         - { name: Windows Clang,   os: windows-2022, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
         - { name: Linux GCC,       os: ubuntu-22.04, flags: -GNinja }
         - { name: Linux Clang,     os: ubuntu-22.04, flags: -GNinja -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: macOS GCC,       os: macos-12,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-12 -DLAPLACE_BUILD_EXAMPLES=OFF }
-        - { name: macOS Clang,     os: macos-12,     flags: -GNinja }
+        - { name: macOS GCC,       os: macos-14,     flags: -GNinja -DCMAKE_CXX_COMPILER=g++-14 -DLAPLACE_BUILD_EXAMPLES=OFF }
+        - { name: macOS Clang,     os: macos-14,     flags: -GNinja }
         type:
         - { name: Static, flags: "OFF" }
         - { name: Shared, flags: "ON" }
@@ -111,7 +111,7 @@ jobs:
 
   tidy:
     name: Static Analysis
-    runs-on: macos-12
+    runs-on: macos-14
 
     steps:
     - name: Install clang-tidy
